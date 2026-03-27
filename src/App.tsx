@@ -1,13 +1,14 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import { Auth } from './pages/Auth';
-import { Dashboard } from './pages/Dashboard';
-import { MyCourses } from './pages/MyCourses';
-import { Explore } from './pages/Explore';
-import { CourseViewer } from './pages/CourseViewer';
-import { Certificates } from './pages/Certificates';
-import { Settings } from './pages/Settings';
+import { AdminRoute } from "./components/AdminRoute";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { Auth } from "./pages/Auth";
+import { Dashboard } from "./pages/Dashboard";
+import { MyCourses } from "./pages/MyCourses";
+import { Explore } from "./pages/Explore";
+import { CourseViewer } from "./pages/CourseViewer";
+import { Certificates } from "./pages/Certificates";
+import { Settings } from "./pages/Settings";
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -38,6 +39,23 @@ function App() {
               <AuthGuard>
                 <Auth />
               </AuthGuard>
+            }
+          />
+          {/* ROTAS DE ADMINISTRADOR */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminRoute>
+                <div>Página de Dashboard do Admin (Em construção)</div>
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/cursos"
+            element={
+              <AdminRoute>
+                <div>Página de Gestão de Cursos (Em construção)</div>
+              </AdminRoute>
             }
           />
           <Route

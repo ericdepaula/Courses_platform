@@ -1,13 +1,17 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import { Auth } from './pages/Auth';
-import { Dashboard } from './pages/Dashboard';
-import { MyCourses } from './pages/MyCourses';
-import { Explore } from './pages/Explore';
-import { CourseViewer } from './pages/CourseViewer';
-import { Certificates } from './pages/Certificates';
-import { Settings } from './pages/Settings';
+import { AdminRoute } from "./components/AdminRoute";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { Auth } from "./pages/Auth";
+import { Dashboard } from "./pages/Dashboard";
+import { MyCourses } from "./pages/MyCourses";
+import { Explore } from "./pages/Explore";
+import { CourseViewer } from "./pages/CourseViewer";
+import { Certificates } from "./pages/Certificates";
+import { Settings } from "./pages/Settings";
+import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { ManageCourses } from './pages/admin/ManageCourses';
+import { Layout } from "./components/layout/Layout";
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -40,6 +44,27 @@ function App() {
               </AuthGuard>
             }
           />
+          {/* ROTAS DE ADMINISTRADOR */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminRoute>
+              <Layout title="Admin Dashboard">
+                <AdminDashboard />
+              </Layout>
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/cursos"
+          element={
+            <AdminRoute>
+              <Layout title="Manage Courses">
+                <ManageCourses />
+              </Layout>
+            </AdminRoute>
+          }
+        />
           <Route
             path="/dashboard"
             element={

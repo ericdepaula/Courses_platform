@@ -12,6 +12,7 @@ import { Settings } from "./pages/Settings";
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { ManageCourses } from './pages/admin/ManageCourses';
 import { Layout } from "./components/layout/Layout";
+import { Analytics } from "@vercel/analytics/next"
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();

@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Clock, Play } from 'lucide-react';
-import { Layout } from '../components/layout/Layout';
-import { Card } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { ProgressBar } from '../components/ui/ProgressBar';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Clock, Play } from "lucide-react";
+import { Layout } from "../components/layout/Layout";
+import { Card } from "../components/ui/Card";
+import { Button } from "../components/ui/Button";
+import { ProgressBar } from "../components/ui/ProgressBar";
+import { supabase } from "../lib/supabase";
+import { useAuth } from "../contexts/AuthContext";
+import { Analytics } from "@vercel/analytics/react";
 
 interface Course {
   id: string;
@@ -40,8 +41,9 @@ export function Dashboard() {
 
     try {
       const { data: enrollments } = await supabase
-        .from('enrollments')
-        .select(`
+        .from("enrollments")
+        .select(
+          `
           course_id,
           courses (
             id,
@@ -52,8 +54,9 @@ export function Dashboard() {
             level,
             duration_hours
           )
-        `)
-        .eq('user_id', user.id);
+        `,
+        )
+        .eq("user_id", user.id);
 
       if (enrollments) {
         const coursesWithProgress = await Promise.all(
@@ -61,18 +64,15 @@ export function Dashboard() {
             const course = enrollment.courses;
 
             const { data: lessons } = await supabase
-              .from('lessons')
-              .select('id')
-              .eq('course_id', course.id);
+              .from("lessons")
+              .select("id")
+              .eq("course_id", course.id);
 
             const { data: progress } = await supabase
-              .from('lesson_progress')
-              .select('completed')
-              .eq('user_id', user.id)
-              .in(
-                'lesson_id',
-                lessons?.map((l) => l.id) || []
-              );
+              .from("lesson_progress")
+              .select("completed")
+              .eq("user_id", user.id)
+              .in("lesson_id", lessons?.map((l) => l.id) || []);
 
             const totalLessons = lessons?.length || 0;
             const completedLessons =
@@ -86,26 +86,26 @@ export function Dashboard() {
               totalLessons,
               completedLessons,
             };
-          })
+          }),
         );
 
         setEnrolledCourses(coursesWithProgress);
       }
 
       const { data: allCourses } = await supabase
-        .from('courses')
-        .select('*')
+        .from("courses")
+        .select("*")
         .limit(3);
 
       if (allCourses) {
         const notEnrolled = allCourses.filter(
           (course) =>
-            !enrollments?.some((e: any) => e.courses.id === course.id)
+            !enrollments?.some((e: any) => e.courses.id === course.id),
         );
         setRecommendedCourses(notEnrolled);
       }
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
+      console.error("Error loading dashboard data:", error);
     } finally {
       setLoading(false);
     }
@@ -133,7 +133,7 @@ export function Dashboard() {
               <p className="text-slate-600 mb-4">
                 Você ainda não está matriculado em nenhum curso
               </p>
-              <Button onClick={() => navigate('/explore')}>
+              <Button onClick={() => navigate("/explore")}>
                 Explorar Cursos
               </Button>
             </Card>
@@ -223,6 +223,7 @@ export function Dashboard() {
           </div>
         </section>
       </div>
+      <Analytics />
     </Layout>
   );
 }

@@ -20,8 +20,8 @@ const navItems = [
   { to: "/dashboard", icon: Home, label: "Dashboard" },
   { to: "/my-courses", icon: BookOpen, label: "Meus Cursos" },
   { to: "/explore", icon: Compass, label: "Explorar" },
-  { to: "/certificates", icon: Award, label: "Certificados" },
-  { to: "/settings", icon: Settings, label: "Configurações" },
+  // { to: "/certificates", icon: Award, label: "Certificados" },
+  // { to: "/settings", icon: Settings, label: "Configurações" },
 ];
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {

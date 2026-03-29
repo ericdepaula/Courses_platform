@@ -7,7 +7,7 @@ interface HeaderProps {
 }
 
 export function Header({ onMenuClick, title }: HeaderProps) {
-  const { user } = useAuth();
+  const { user, role } = useAuth();
 
   return (
     <header className="bg-white border-b border-slate-200 px-4 lg:px-8 py-4">
@@ -27,7 +27,9 @@ export function Header({ onMenuClick, title }: HeaderProps) {
             <p className="text-sm font-medium text-slate-900">
               {user?.email?.split('@')[0]}
             </p>
-            <p className="text-xs text-slate-500">Estudante</p>
+            <p className="text-xs text-slate-500">
+              {user ? role || 'Carregando...' : null}
+            </p>
           </div>
           <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
             <User className="w-5 h-5 text-indigo-600" />

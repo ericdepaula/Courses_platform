@@ -159,17 +159,29 @@ export function CourseViewer() {
                 ></iframe>
               ) : (
                 <div className="text-center text-white p-8">
-                  <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                  {/* Ícone de relógio estilizado com as cores da plataforma */}
+                  <div className="w-20 h-20 bg-indigo-900/40 rounded-full flex items-center justify-center mx-auto mb-4 border border-indigo-500/30">
                     <svg
-                      className="w-10 h-10 text-slate-500"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                      className="w-10 h-10 text-indigo-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
                   </div>
-                  <p className="text-lg font-medium text-slate-400">
-                    Vídeo indisponível
+                  <p className="text-xl font-medium text-white mb-2">
+                    Aula em Produção
+                  </p>
+                  <p className="text-sm text-slate-400 max-w-sm mx-auto">
+                    Estamos a preparar um conteúdo incrível para si. Este vídeo
+                    estará disponível muito em breve!
                   </p>
                 </div>
               )}

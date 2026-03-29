@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { CheckCircle2, Circle, FileText, Download } from 'lucide-react';
-import { Layout } from '../components/layout/Layout';
-import { Card } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { CheckCircle2, Circle, FileText, Download } from "lucide-react";
+import { Layout } from "../components/layout/Layout";
+import { Card } from "../components/ui/Card";
+import { Button } from "../components/ui/Button";
+import { supabase } from "../lib/supabase";
+import { useAuth } from "../contexts/AuthContext";
 
 interface Lesson {
   id: string;
@@ -30,7 +30,9 @@ export function CourseViewer() {
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
-  const [activeTab, setActiveTab] = useState<'description' | 'materials'>('description');
+  const [activeTab, setActiveTab] = useState<"description" | "materials">(
+    "description",
+  );
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
@@ -45,9 +47,9 @@ export function CourseViewer() {
 
     try {
       const { data: courseData } = await supabase
-        .from('courses')
-        .select('*')
-        .eq('id', courseId)
+        .from("courses")
+        .select("*")
+        .eq("id", courseId)
         .single();
 
       if (courseData) {
@@ -55,19 +57,19 @@ export function CourseViewer() {
       }
 
       const { data: lessonsData } = await supabase
-        .from('lessons')
-        .select('*')
-        .eq('course_id', courseId)
-        .order('order_index', { ascending: true });
+        .from("lessons")
+        .select("*")
+        .eq("course_id", courseId)
+        .order("order_index", { ascending: true });
 
       if (lessonsData && user) {
         const { data: progressData } = await supabase
-          .from('lesson_progress')
-          .select('*')
-          .eq('user_id', user.id)
+          .from("lesson_progress")
+          .select("*")
+          .eq("user_id", user.id)
           .in(
-            'lesson_id',
-            lessonsData.map((l) => l.id)
+            "lesson_id",
+            lessonsData.map((l) => l.id),
           );
 
         const lessonsWithProgress = lessonsData.map((lesson) => ({
@@ -83,7 +85,7 @@ export function CourseViewer() {
         }
       }
     } catch (error) {
-      console.error('Error loading course data:', error);
+      console.error("Error loading course data:", error);
     } finally {
       setLoading(false);
     }
@@ -93,7 +95,7 @@ export function CourseViewer() {
     if (!user) return;
 
     try {
-      const { error } = await supabase.from('lesson_progress').upsert(
+      const { error } = await supabase.from("lesson_progress").upsert(
         {
           user_id: user.id,
           lesson_id: lessonId,
@@ -101,19 +103,19 @@ export function CourseViewer() {
           updated_at: new Date().toISOString(),
         },
         {
-          onConflict: 'user_id,lesson_id',
-        }
+          onConflict: "user_id,lesson_id",
+        },
       );
 
       if (!error) {
         setLessons((prev) =>
           prev.map((lesson) =>
-            lesson.id === lessonId ? { ...lesson, completed: true } : lesson
-          )
+            lesson.id === lessonId ? { ...lesson, completed: true } : lesson,
+          ),
         );
       }
     } catch (error) {
-      console.error('Error updating progress:', error);
+      console.error("Error updating progress:", error);
     }
   };
 
@@ -146,22 +148,31 @@ export function CourseViewer() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
           <Card className="overflow-hidden">
-            <div className="bg-slate-900 aspect-video flex items-center justify-center">
-              <div className="text-center text-white p-8">
-                <div className="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-10 h-10"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                  </svg>
+            <div className="bg-slate-900 aspect-video flex items-center justify-center relative overflow-hidden rounded-t-xl">
+              {currentLesson.video_url ? (
+                <iframe
+                  src={`https://drive.google.com/file/d/${currentLesson.video_url}/preview`}
+                  className="absolute top-0 left-0 w-full h-full border-0"
+                  allow="autoplay; encrypted-media; fullscreen"
+                  allowFullScreen
+                  title={`Vídeo da aula: ${currentLesson.title}`}
+                ></iframe>
+              ) : (
+                <div className="text-center text-white p-8">
+                  <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="w-10 h-10 text-slate-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                    </svg>
+                  </div>
+                  <p className="text-lg font-medium text-slate-400">
+                    Vídeo indisponível
+                  </p>
                 </div>
-                <p className="text-lg font-medium">{currentLesson.title}</p>
-                <p className="text-sm text-slate-400 mt-2">
-                  {currentLesson.duration_minutes} minutos
-                </p>
-              </div>
+              )}
             </div>
           </Card>
 
@@ -175,29 +186,31 @@ export function CourseViewer() {
                 onClick={() => handleLessonComplete(currentLesson.id)}
                 disabled={currentLesson.completed}
               >
-                {currentLesson.completed ? 'Concluída' : 'Marcar como Concluída'}
+                {currentLesson.completed
+                  ? "Concluída"
+                  : "Marcar como Concluída"}
               </Button>
             </div>
 
             <div className="border-b border-slate-200 mb-4">
               <div className="flex gap-4">
                 <button
-                  onClick={() => setActiveTab('description')}
+                  onClick={() => setActiveTab("description")}
                   className={`pb-3 px-2 font-medium transition-colors ${
-                    activeTab === 'description'
-                      ? 'text-indigo-600 border-b-2 border-indigo-600'
-                      : 'text-slate-600 hover:text-slate-900'
+                    activeTab === "description"
+                      ? "text-indigo-600 border-b-2 border-indigo-600"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
                   <FileText className="w-4 h-4 inline mr-2" />
                   Descrição
                 </button>
                 <button
-                  onClick={() => setActiveTab('materials')}
+                  onClick={() => setActiveTab("materials")}
                   className={`pb-3 px-2 font-medium transition-colors ${
-                    activeTab === 'materials'
-                      ? 'text-indigo-600 border-b-2 border-indigo-600'
-                      : 'text-slate-600 hover:text-slate-900'
+                    activeTab === "materials"
+                      ? "text-indigo-600 border-b-2 border-indigo-600"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
                   <Download className="w-4 h-4 inline mr-2" />
@@ -206,7 +219,7 @@ export function CourseViewer() {
               </div>
             </div>
 
-            {activeTab === 'description' ? (
+            {activeTab === "description" ? (
               <div className="prose prose-slate max-w-none">
                 <p className="text-slate-700">{currentLesson.description}</p>
                 <div className="mt-4 p-4 bg-slate-50 rounded-lg">
@@ -257,8 +270,8 @@ export function CourseViewer() {
                   onClick={() => selectLesson(lesson)}
                   className={`p-3 rounded-lg cursor-pointer transition-all ${
                     currentLesson.id === lesson.id
-                      ? 'bg-indigo-50 border-2 border-indigo-500'
-                      : 'bg-slate-50 hover:bg-slate-100 border-2 border-transparent'
+                      ? "bg-indigo-50 border-2 border-indigo-500"
+                      : "bg-slate-50 hover:bg-slate-100 border-2 border-transparent"
                   }`}
                 >
                   <div className="flex items-start gap-3">

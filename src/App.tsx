@@ -9,10 +9,10 @@ import { Explore } from "./pages/Explore";
 import { CourseViewer } from "./pages/CourseViewer";
 import { Certificates } from "./pages/Certificates";
 import { Settings } from "./pages/Settings";
-import { AdminDashboard } from './pages/admin/AdminDashboard';
-import { ManageCourses } from './pages/admin/ManageCourses';
+import { AdminDashboard } from "./pages/admin/AdminDashboard";
+import { ManageCourses } from "./pages/admin/ManageCourses";
 import { Layout } from "./components/layout/Layout";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react";
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -46,26 +46,26 @@ function App() {
             }
           />
           {/* ROTAS DE ADMINISTRADOR */}
-        <Route
-          path="/admin/dashboard"
-          element={
-            <AdminRoute>
-              <Layout title="Admin Dashboard">
-                <AdminDashboard />
-              </Layout>
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/cursos"
-          element={
-            <AdminRoute>
-              <Layout title="Manage Courses">
-                <ManageCourses />
-              </Layout>
-            </AdminRoute>
-          }
-        />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminRoute>
+                <Layout title="Admin Dashboard">
+                  <AdminDashboard />
+                </Layout>
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/cursos"
+            element={
+              <AdminRoute>
+                <Layout title="Manage Courses">
+                  <ManageCourses />
+                </Layout>
+              </AdminRoute>
+            }
+          />
           <Route
             path="/dashboard"
             element={
@@ -116,6 +116,7 @@ function App() {
           />
         </Routes>
       </AuthProvider>
+      <Analytics />
     </BrowserRouter>
   );
 }

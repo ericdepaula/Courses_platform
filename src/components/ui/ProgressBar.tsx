@@ -11,14 +11,14 @@ export function ProgressBar({ progress, className = '', showLabel = true }: Prog
     <div className={`w-full ${className}`}>
       <div className="flex items-center justify-between mb-1">
         {showLabel && (
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-[var(--text-muted)]">
             {percentage}% concluído
           </span>
         )}
       </div>
-      <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+      <div className="h-2.5 w-full overflow-hidden rounded-full bg-[var(--bg-soft)]">
         <div
-          className="bg-indigo-600 h-full rounded-full transition-all duration-300"
+          className="h-full rounded-full bg-[var(--brand-teal)] transition-all duration-500"
           style={{ width: `${percentage}%` }}
         />
       </div>

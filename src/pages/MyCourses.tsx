@@ -107,7 +107,7 @@ export function MyCourses() {
           <p className="text-slate-600 mb-4">
             Você ainda não está matriculado em nenhum curso
           </p>
-          <Button onClick={() => navigate('/explore')}>Explorar Cursos</Button>
+          <Button onClick={() => navigate('/dashboard')}>Explorar Cursos</Button>
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -125,12 +125,12 @@ export function MyCourses() {
               />
               <div className="p-4">
                 <span className="text-xs font-medium px-2 py-1 bg-indigo-100 text-indigo-700 rounded">
-                  {course.category}
+                  
                 </span>
                 <h3 className="font-bold text-lg text-slate-900 mt-2 mb-2">
                   {course.title}
                 </h3>
-                <p className="text-sm text-slate-600 mb-4">{course.instructor}</p>
+                <p className="text-sm text-slate-600 mb-4">Módulo da Plataforma</p>
                 <ProgressBar progress={course.progress} />
                 <div className="flex items-center justify-between mt-4">
                   <span className="text-sm text-slate-600">

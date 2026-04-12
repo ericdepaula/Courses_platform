@@ -158,10 +158,10 @@ export function Explore() {
                 <div className="p-4 flex flex-col flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xs font-medium px-2 py-1 bg-indigo-100 text-indigo-700 rounded">
-                      {course.category}
+                      
                     </span>
                     <span className="text-xs font-medium px-2 py-1 bg-slate-100 text-slate-700 rounded">
-                      {course.level}
+                      
                     </span>
                   </div>
                   <h3 className="font-bold text-lg text-slate-900 mb-2">
@@ -171,7 +171,7 @@ export function Explore() {
                     {course.description}
                   </p>
                   <p className="text-sm text-slate-700 mb-3">
-                    {course.instructor}
+                    Módulo da Plataforma
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center text-sm text-slate-600">

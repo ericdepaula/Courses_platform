@@ -1,3 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --bg-base: #0f1724;
+    --bg-muted: #162133;
+    --bg-elevated: rgba(22, 33, 51, 0.9);
+    --bg-soft: rgba(255, 255, 255, 0.06);
+    --stroke-soft: rgba(255, 255, 255, 0.11);
+    --text-strong: #eff5fb;
+    --text-muted: #9cadc0;
+    --brand-accent: #52b9ea;
+    --brand-accent-strong: #7fd1f6;
+    --brand-blue: #52b9ea;
+    --brand-teal: #58c7b1;
+    --brand-steel: #8c98ab;
+    --shadow-lift: 0 24px 80px rgba(3, 7, 18, 0.42);
+  }
+
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --bg-base: #f3f7fb;
+    --bg-muted: #e4edf6;
+    --bg-elevated: rgba(255, 255, 255, 0.94);
+    --bg-soft: rgba(15, 23, 36, 0.04);
+    --stroke-soft: rgba(15, 23, 36, 0.08);
+    --text-strong: #162133;
+    --text-muted: #5d6d80;
+    --shadow-lift: 0 18px 50px rgba(18, 31, 47, 0.08);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background:
+      radial-gradient(circle at top left, rgba(82, 185, 234, 0.12), transparent 28%),
+      radial-gradient(circle at top right, rgba(82, 185, 234, 0.1), transparent 24%),
+      radial-gradient(circle at bottom center, rgba(88, 199, 177, 0.08), transparent 30%),
+      linear-gradient(180deg, var(--bg-base) 0%, var(--bg-base) 100%);
+    color: var(--text-strong);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+  }
+
+  ::selection {
+    background: rgba(82, 185, 234, 0.34);
+    color: white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  .app-shell {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(82, 185, 234, 0.1), transparent 25%),
+      radial-gradient(circle at 90% 0%, rgba(82, 185, 234, 0.08), transparent 22%),
+      linear-gradient(180deg, var(--bg-base) 0%, var(--bg-base) 100%);
+  }
+
+  .glass-panel {
+    background: var(--bg-elevated);
+    border: 1px solid var(--stroke-soft);
+    box-shadow: var(--shadow-lift);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+  }
+
+  .glass-soft {
+    background: var(--bg-soft);
+    border: 1px solid var(--stroke-soft);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .headline-display {
+    font-family: "Fraunces", serif;
+    letter-spacing: -0.04em;
+  }
+
+  .section-kicker {
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--brand-accent);
+  }
+
+  .ambient-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: center center;
+  }
+
+  .surface-subtle {
+    background: var(--bg-soft);
+    border: 1px solid var(--stroke-soft);
+  }
+}

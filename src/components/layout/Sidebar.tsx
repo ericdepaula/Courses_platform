@@ -1,15 +1,14 @@
-import { Shield, FolderCog } from "lucide-react"; // Adicione ícones para o menu admin
+import { FolderCog, Moon, Sun } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
-  Home,
-  BookOpen,
-  Compass,
-  Award,
   Settings,
   X,
   LogOut,
+  LayoutDashboard,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTheme } from "../../contexts/ThemeContext";
+import { BrandMark } from "../brand/Illustrations";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -17,16 +16,14 @@ interface SidebarProps {
 }
 
 const navItems = [
-  { to: "/dashboard", icon: Home, label: "Dashboard" },
-  { to: "/my-courses", icon: BookOpen, label: "Meus Cursos" },
-  { to: "/explore", icon: Compass, label: "Explorar" },
-  // { to: "/certificates", icon: Award, label: "Certificados" },
-  // { to: "/settings", icon: Settings, label: "Configurações" },
+  { to: "/dashboard", icon: LayoutDashboard, label: "Painel" },
+  { to: "/settings", icon: Settings, label: "Configurações" },
 ];
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
-  const { isAdmin } = useAuth(); // NOVO: Trazendo a permissão do usuário
+  const { isAdmin } = useAuth();
   const { signOut, user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -42,25 +39,27 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 z-40 bg-[#030712]/70 backdrop-blur-sm lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-slate-900 text-white transform transition-transform duration-300 ease-in-out ${
+        className={`glass-panel fixed inset-y-0 left-0 z-50 m-3 w-[18rem] rounded-[2rem] text-white transform transition-transform duration-300 ease-in-out lg:static lg:m-4 lg:h-[calc(100vh-2rem)] ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between p-6 border-b border-slate-800">
-            <div className="flex items-center space-x-2">
-              <BookOpen className="w-8 h-8 text-indigo-400" />
-              <span className="text-xl font-bold">LearnHub</span>
+          <div className="flex items-center justify-between border-b border-white/10 p-6">
+            <div className="flex items-center space-x-3">
+              <BrandMark />
+              <div>
+                <p className="text-sm font-semibold text-[var(--text-strong)]">LearnHub</p>
+              </div>
             </div>
             <button
               onClick={onClose}
-              className="lg:hidden p-2 hover:bg-slate-800 rounded-lg transition-colors"
+              className="rounded-full p-2 transition-colors hover:bg-white/8 lg:hidden"
             >
               <X className="w-5 h-5" />
             </button>
@@ -73,10 +72,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 to={item.to}
                 onClick={onClose}
                 className={({ isActive }) =>
-                  `flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                  `flex items-center space-x-3 rounded-2xl px-4 py-3 transition-all duration-200 ${
                     isActive
-                      ? "bg-indigo-600 text-white shadow-lg"
-                      : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                      ? "bg-[var(--brand-blue)] text-white"
+                      : "text-[var(--text-strong)] hover:bg-[var(--bg-soft)]"
                   }`
                 }
               >
@@ -84,36 +83,31 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <span className="font-medium">{item.label}</span>
               </NavLink>
             ))}
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="mt-4 flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-[var(--text-strong)] transition-all duration-200 hover:bg-[var(--bg-soft)]"
+            >
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              <span className="font-medium">{theme === "dark" ? "Tema claro" : "Tema escuro"}</span>
+            </button>
+
             {/* --- DIVISOR DO MENU ADMIN --- */}
             {isAdmin && (
               <div className="mt-8">
-                <h3 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                <h3 className="mb-2 px-4 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                   Administração
                 </h3>
                 <ul className="space-y-1">
-                  <li>
-                    <NavLink
-                      to="/admin/dashboard"
-                      className={({ isActive }) =>
-                        `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                          isActive
-                            ? "bg-indigo-50 text-indigo-700 font-medium"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                        }`
-                      }
-                    >
-                      <Shield className="w-5 h-5" />
-                      Visão Geral
-                    </NavLink>
-                  </li>
                   <li>
                     <NavLink
                       to="/admin/cursos"
                       className={({ isActive }) =>
                         `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                           isActive
-                            ? "bg-indigo-50 text-indigo-700 font-medium"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                            ? "bg-[var(--bg-soft)] text-[var(--text-strong)] font-medium"
+                            : "text-[var(--text-muted)] hover:bg-[var(--bg-soft)] hover:text-[var(--text-strong)]"
                         }`
                       }
                     >
@@ -126,18 +120,18 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             )}
           </nav>
 
-          <div className="p-4 border-t border-slate-800">
+          <div className="border-t border-white/10 p-4">
             {user && (
               <>
                 <div className="mb-3 px-2">
-                  <p className="text-sm text-slate-400">Logado como</p>
-                  <p className="text-sm font-medium text-white truncate">
+                  <p className="text-sm text-[var(--text-muted)]">Conectado como</p>
+                  <p className="truncate text-sm font-medium text-[var(--text-strong)]">
                     {user.email}
                   </p>
                 </div>
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-slate-300 hover:bg-red-600 hover:text-white transition-all duration-200"
+                  className="flex w-full items-center space-x-3 rounded-2xl px-4 py-3 text-[var(--text-strong)] transition-all duration-200 hover:bg-[var(--bg-soft)]"
                 >
                   <LogOut className="w-5 h-5" />
                   <span className="font-medium">Sair</span>

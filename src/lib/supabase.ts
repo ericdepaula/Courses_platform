@@ -16,7 +16,6 @@ export type Database = {
           instructor: string;
           thumbnail_url: string;
           category: string;
-          level: string;
           duration_hours: number;
           created_at: string;
           updated_at: string;

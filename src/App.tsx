@@ -4,14 +4,13 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Auth } from "./pages/Auth";
 import { Dashboard } from "./pages/Dashboard";
-import { MyCourses } from "./pages/MyCourses";
-import { Explore } from "./pages/Explore";
+import { CourseGroup } from "./pages/CourseGroup";
 import { CourseViewer } from "./pages/CourseViewer";
-import { Certificates } from "./pages/Certificates";
 import { Settings } from "./pages/Settings";
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
 import { ManageCourses } from "./pages/admin/ManageCourses";
 import { Layout } from "./components/layout/Layout";
+import { LoadingScreen } from "./components/ui/LoadingScreen";
 import { Analytics } from "@vercel/analytics/react";
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -19,8 +18,10 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-slate-600">Carregando...</div>
+      <div className="app-shell flex min-h-screen items-center justify-center">
+        <LoadingScreen
+          label="Preparando acesso"
+        />
       </div>
     );
   }
@@ -76,19 +77,11 @@ function App() {
           />
           <Route
             path="/my-courses"
-            element={
-              <ProtectedRoute>
-                <MyCourses />
-              </ProtectedRoute>
-            }
+            element={<Navigate to="/dashboard" replace />}
           />
           <Route
             path="/explore"
-            element={
-              <ProtectedRoute>
-                <Explore />
-              </ProtectedRoute>
-            }
+            element={<Navigate to="/dashboard" replace />}
           />
           <Route
             path="/course/:courseId"
@@ -99,10 +92,10 @@ function App() {
             }
           />
           <Route
-            path="/certificates"
+            path="/course-group/:groupName"
             element={
               <ProtectedRoute>
-                <Certificates />
+                <CourseGroup />
               </ProtectedRoute>
             }
           />
